@@ -1,0 +1,175 @@
+
+
+########## Problem 1 ##########
+
+Sample moments
+==============
+n            = 1000
+mean         = 0.001104
+variance     = 0.000096
+std dev      = 0.009811
+skewness     = -0.669837
+excess kurt. = 2.357614
+
+Fitted Normal (moment matching)
+===============================
+mu    = 0.001104
+sigma = 0.009811
+
+Left-tail check at the 1% quantile
+==================================
+Normal's 1% quantile        = -0.021719
+observations below it       = 26
+expected under the Normal   = 10.00
+
+Saved plot to figures\problem1_fit.png
+
+
+########## Problem 2 ##########
+Saved scatter to figures\problem2_scatter.png
+
+Model 1: OLS
+============
+alpha       = 1.560740  (se = 0.096269)
+beta        = 2.990757  (se = 0.096640)
+sigma (n-2) = 1.351401
+
+Model 2: MLE, Normal error
+==========================
+alpha = 1.560740
+beta  = 2.990757
+sigma = 1.344627
+log-likelihood = -343.0110
+
+Model 3: MLE, Student's t error
+===============================
+alpha      = 1.547979
+beta       = 3.019179
+scale      = 0.935509
+nu (dof)   = 3.632164
+log-likelihood = -328.5612
+optimizer converged = True
+
+Model comparison (AICc)
+=======================
+model                    k        loglik          AICc
+MLE Normal               3     -343.0110      692.1445
+MLE Student t            4     -328.5612      665.3275
+delta AICc (Normal - t) = 26.8170
+
+Note: OLS's alpha/beta are numerically identical to the Normal MLE's;
+only the sigma divisor differs (n-2 vs n), so OLS is not given a separate
+AICc row -- it is the same model as 'MLE Normal' up to that dof correction.
+
+Model selected by AICc
+======================
+MLE Student t  (AICc = 665.3275)
+
+Error-distribution quantiles
+============================
+quantile          Normal   Student t
+0.95            2.211715    2.053833
+0.995           3.463530    4.620085
+
+
+########## Problem 3 ##########
+Saved pairwise plot to figures\problem3_pairs.png
+
+Pearson correlation matrix
+==========================
+        x1      x2      x3      x4
+x1  1.0000  0.7991  0.7195 -0.0047
+x2  0.7991  1.0000  0.5876 -0.0209
+x3  0.7195  0.5876  1.0000 -0.0086
+x4 -0.0047 -0.0209 -0.0086  1.0000
+
+Spearman correlation matrix
+===========================
+        x1      x2      x3      x4
+x1  1.0000  0.9719  0.6839  0.0002
+x2  0.9719  1.0000  0.6674 -0.0011
+x3  0.6839  0.6674  1.0000 -0.0024
+x4  0.0002 -0.0011 -0.0024  1.0000
+
+Absolute gap |Pearson - Spearman|
+=================================
+        x1      x2      x3      x4
+x1  0.0000  0.1728  0.0356  0.0049
+x2  0.1728  0.0000  0.0798  0.0198
+x3  0.0356  0.0798  0.0000  0.0062
+x4  0.0049  0.0198  0.0062  0.0000
+
+Largest gap
+===========
+pair            = (x1, x2)
+Pearson         = 0.7991
+Spearman        = 0.9719
+|gap|           = 0.1728
+
+
+########## Problem 4 ##########
+
+Sample covariance matrix (block 1 = x1, block 2 = x2)
+=====================================================
+S11 = Var(x1)  = 1.099875
+S22 = Var(x2)  = 4.104749
+S12 = S21 = Cov(x1,x2) = 1.696902
+
+(a) Conditional variance of x2 given x1
+=======================================
+Formula: Var(x2|x1) = S22 - S21 * S11^-1 * S12
+Var(x2|x1)                = 1.486746
+Var(x2) (unconditional)   = 4.104749
+factor = Var(x2|x1)/Var(x2) = 1 - rho^2 = 0.362201  (rho = 0.798623)
+
+(b) Does the factor depend on the observed x1?
+==============================================
+No: S21 * S11^-1 * S12 has no x1 term in it, so the conditional
+variance -- and hence the factor above -- is the same for every x1.
+
+(c) Conditional mean of x2 given x1
+===================================
+Formula: E(x2|x1) = mu2 + S21 * S11^-1 * (x1 - mu1)
+slope on x1 (= S21/S11, the OLS slope of x2~x1) = 1.542813
+intercept implied                                = 0.071073
+
+Saved plot to figures\problem4_conditional.png
+
+(d) Overall coverage of the 95% band
+====================================
+fraction inside band = 0.9350  (935 / 1000)
+
+(e) Coverage by distance of x1 from its mean
+============================================
+bucket             n    coverage
+within 1 sd      759      0.9565
+1 to 2 sd        190      0.8579
+beyond 2 sd       51      0.9020
+
+
+########## Problem 5 ##########
+Saved series/ACF/PACF plot to figures\problem5_series_acf_pacf.png
+
+Fitted models
+=============
+AR(1)    k=3  loglik=-706.2693  AICc=1418.5870
+         params: [0.6707 0.4611 0.9868]
+AR(2)    k=4  loglik=-682.1788  AICc=1372.4383
+         params: [ 0.6706  0.6012 -0.3026  0.8958]
+AR(3)    k=5  loglik=-682.1109  AICc=1374.3432
+         params: [ 0.6705  0.5962 -0.2927 -0.0165  0.8956]
+MA(1)    k=3  loglik=-691.5179  AICc=1389.0843
+         params: [0.6713 0.5296 0.9301]
+MA(2)    k=4  loglik=-686.5754  AICc=1381.2316
+         params: [0.671  0.6314 0.1615 0.9117]
+MA(3)    k=5  loglik=-681.9975  AICc=1374.1165
+         params: [ 0.6709  0.5931  0.0648 -0.1555  0.8951]
+
+Model selected by AICc
+======================
+AR(2)  (AICc = 1372.4383)
+
+AR(2) vs AR(3), for the reconciliation writeup
+==============================================
+AR(2): loglik=-682.1788  AICc=1372.4383  params=[ 0.6706  0.6012 -0.3026  0.8958]
+AR(3): loglik=-682.1109  AICc=1374.3432  params=[ 0.6705  0.5962 -0.2927 -0.0165  0.8956]

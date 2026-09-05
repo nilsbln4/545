@@ -37,3 +37,9 @@ writing-style.md
 
 /.quarto/
 **/*.quarto_ipynb
+
+# Python bytecode cache, from running assignment scripts
+__pycache__/
+
+# Personal scratch space for temporary/local files, not for the repo
+/scratch/
