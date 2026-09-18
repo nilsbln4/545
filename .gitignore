@@ -41,5 +41,9 @@ writing-style.md
 # Python bytecode cache, from running assignment scripts
 __pycache__/
 
+# Build/test artifacts from the risk545 package
+*.egg-info/
+.pytest_cache/
+
 # Personal scratch space for temporary/local files, not for the repo
 /scratch/
