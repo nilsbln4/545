@@ -13,5 +13,14 @@ dependencies = [
     "pandas>=1.5",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "matplotlib>=3.6",
+    "pytest>=8.0",
+    "jupyter",
+    "ipykernel",
+    "statsmodels>=0.14",  # used by Assignments/Assignment1
+]
+
 [tool.setuptools]
 packages = ["risk545"]

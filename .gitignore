@@ -45,6 +45,10 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 
+# Course virtual environment -- machine-specific, recreated with:
+#   python -m venv .venv && .venv/Scripts/pip install -e ".[dev]"
+.venv/
+
 # Personal scratch space for temporary/local files, not for the repo
 /scratch/
 
