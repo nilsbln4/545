@@ -47,3 +47,6 @@ __pycache__/
 
 # Personal scratch space for temporary/local files, not for the repo
 /scratch/
+
+# Microsoft Office lock files (created while a file is open elsewhere)
+~$*
