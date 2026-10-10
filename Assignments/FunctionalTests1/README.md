@@ -7,8 +7,9 @@ risk-management library, checked against `testfiles/data/` through test 7.6.
 
 | Path | What's there |
 |:--|:--|
-| `risk545/` | The package: `covariance.py`, `psd.py`, `simulate.py`, `returns.py`, `fitted_model.py`. |
+| `risk545/` | The package: `covariance.py`, `psd.py`, `simulate.py`, `returns.py`, `fitted_model.py`, plus `risk_stats.py` (VaR/ES), `multivariate_t.py` and `copula.py` (tests 8-13, added for Assignment 2). |
 | `tests/test_functional.py` | Automated pass/fail check against every `testout*.csv` in `testfiles/data/`, tests 1 through 7.6. |
+| `tests/test_risk_and_copula.py` | The same for tests 8.1-8.6, 9.1 and 13.1-13.9, plus known-answer checks of VaR/ES. |
 | `Assignments/FunctionalTests1/functional_tests_1.ipynb` | Guided walkthrough of the package -- what each function does and why, run against the real test data. |
 
 ## Setup
