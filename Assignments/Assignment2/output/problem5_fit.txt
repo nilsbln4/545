@@ -1,0 +1,57 @@
+
+(b) Regressions of each stock on the market: r_i = alpha + beta * r_MKT + eps
+=============================================================================
+500 daily arithmetic returns; residual variance divides by T - 2 = 498
+
+                 alpha        beta   residual SD
+A             0.000205    1.035278      0.012901
+B             0.000315    0.935417      0.011550
+
+Residual covariance matrix:
+            A           B
+A  1.6644e-04  1.0405e-04
+B  1.0405e-04  1.3340e-04
+
+Correlation between the residuals of A and B = 0.698307
+Market return variance = 1.1136e-04   (SD 0.010553)
+
+(c) Simulated VaR at 5%, dollars (100,000 days)
+===============================================
+                    full residual cov off-diagonal zero shortcut effect
+portfolio                                                              
+P1: long A, long B             50,411            44,570          -11.6%
+P2: long A, short B            15,951            28,731          +80.1%
+
+Same models in closed form (no simulation noise):
+                    full residual cov off-diagonal zero shortcut effect
+portfolio                                                              
+P1: long A, long B             50,442            44,512          -11.8%
+P2: long A, short B            15,849            28,535          +80.0%
+
+Simulation noise: SD of the simulated VaR over 10 seeds
+  full residual cov   P1: long A, long B: $278   P2: long A, short B: $81
+  off-diagonal zero   P1: long A, long B: $181   P2: long A, short B: $150
+
+(d) Delta normal VaR at 5% from the sample covariance of the two stock returns, dollars
+=======================================================================================
+Sample covariance matrix of (A, B) returns:
+            A           B
+A  2.8546e-04  2.1169e-04
+B  2.1169e-04  2.3058e-04
+
+P1: long A, long B      $      50,415
+P2: long A, short B     $      15,834
+
+(e)/(f) Side by side, dollars
+=============================
+                      delta normal  full resid (closed form)  full resid (simulated)  off-diag zero (simulated)
+portfolio                                                                                                      
+P1: long A, long B          50,415                    50,442                  50,411                     44,570
+P2: long A, short B         15,834                    15,849                  15,951                     28,731
+
+Why the full-residual and delta normal figures should agree: the model's covariance of (A, B)
+is beta beta' var(MKT) + residual covariance. Compare it with the sample covariance:
+           A          B
+A  3.336e-07  2.085e-07
+B  2.085e-07  2.673e-07
+(largest entry is 0.117% of the largest sample covariance entry)

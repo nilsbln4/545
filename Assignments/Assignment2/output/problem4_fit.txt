@@ -1,0 +1,76 @@
+
+(c) Normal vs Student's t for each margin, by AICc (lower is better)
+====================================================================
+        Normal mu  Normal sigma  Normal AICc      t mu   t sigma       t nu       t AICc  AICc gap (Normal - t)
+series                                                                                                         
+X1       0.000257      0.011894 -6022.536012  0.000257  0.011888  8.356e+13 -6020.524453              -2.011560
+X2      -0.000252      0.016168 -5408.493536 -0.000176  0.012544   5.271477 -5518.184759             109.691223
+X3       0.000890      0.010019 -6365.690739  0.000746  0.008181   6.094881 -6428.015517              62.324778
+
+Chosen margin: X1 = Normal, X2 = t, X3 = t
+(nu above 1e6 means the t fit collapsed to a Normal: same likelihood, one more parameter.)
+
+(d) Copulas fitted to the uniforms from the chosen margins
+==========================================================
+Correlation matrix from Kendall's tau (rho = sin(pi*tau/2)), shared by both copulas:
+          X1        X2        X3
+X1  1.000000  0.583263  0.502851
+X2  0.583263  1.000000  0.464383
+X3  0.502851  0.464383  1.000000
+
+          log likelihood  nu-hat  k      AICc       BIC
+Gaussian        350.4536      --  0 -700.9072 -700.9072
+t               451.9988  3.6585  1 -901.9936 -897.0898
+
+t minus Gaussian:  log likelihood +101.5452   AICc -201.0864   BIC -196.1826   (negative = t preferred)
+
+(e) Portfolio risk, $1,000,000 in each of X1, X2, X3 (dollars, positive = loss)
+===============================================================================
+                                     VaR 5%        ES 5%       VaR 1%        ES 1%
+Gaussian copula (100,000 sims)       49,546       65,983       75,481       92,945
+t copula (100,000 sims)              49,032       68,451       79,235      101,768
+Historical (1,000 days)              47,939       65,699       70,092      102,424
+
+Simulation noise: the same risk numbers over 10 different seeds (mean and SD):
+                     VaR 5%        ES 5%       VaR 1%        ES 1%
+Gaussian: mean       49,515       66,195       75,840       93,691
+Gaussian: SD            241          313          436          805
+t: mean              48,940       68,062       78,934      100,648
+t: SD                   279          516          751        1,132
+
+(f) Joint tail days over 1,000 days: each copula's, next to the data's
+======================================================================
+pair                both worst 2.5%                        both best 2.5%            
+               data      Gaussian             t      data      Gaussian             t
+X1-X2             6          5.96          9.81         8          5.78          9.17
+X1-X3             7          4.49          8.07        12          4.58          7.64
+X2-X3             6          4.17          7.42         9          4.18          7.42
+
+(independence would give 0.625 days)
+
+(i) Each day's contribution to (log likelihood of t copula - log likelihood of Gaussian copula)
+===============================================================================================
+check: sum of daily gaps = 101.5452  vs  total gap 101.5452
+
+Days with no series in an outer 5% on either side: 793 of 1000
+  their total contribution:           +50.5182   (49.7% of the total)
+Days with at least one series in an outer 5%: 207 of 1000
+  their total contribution:           +51.0270   (50.3% of the total)
+
+Five days with the largest contribution (observation number, contribution, uniforms):
+  obs  642   +10.2890   u = 0.0076  0.9789  0.9944
+  obs  481   +10.2459   u = 0.9972  0.0037  0.9279
+  obs   87    +6.0943   u = 0.0947  0.9938  0.9937
+  obs  384    +4.9489   u = 0.4156  0.0104  0.9987
+  obs  649    +4.2214   u = 0.0553  0.9599  0.0126
+
+Days where the t copula is the better fit (contribution > 0): 579 of 1000
+
+(j) Lower tail dependence coefficient
+=====================================
+pair       correlation    t copula    Gaussian
+X1-X2           0.5833      0.3220      0.0000
+X1-X3           0.5029      0.2733      0.0000
+X2-X3           0.4644      0.2525      0.0000
+
+Most correlated pair: X1-X2 (correlation 0.5833), fitted nu = 3.6585

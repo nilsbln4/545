@@ -54,3 +54,4 @@ __pycache__/
 
 # Microsoft Office lock files (created while a file is open elsewhere)
 ~$*
+~WRL*.tmp

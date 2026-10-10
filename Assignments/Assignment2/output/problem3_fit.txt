@@ -1,0 +1,38 @@
+
+(c) Historical and (d) Normal VaR / ES at 5%, in dollars
+========================================================
+VaR and ES are positive for a loss; a negative VaR means the 5% mark is itself a gain.
+Normal VaR uses each P&L's own sample mean and SD (shown); hist ES is the average of the worst 5%.
+
+                                hist VaR        hist ES     Normal VaR       P&L mean         P&L SD
+position                                                                                            
+$1M in A                         -84,531        443,628        139,971         83,709        135,988
+$1M in B                         -86,011        419,587        132,277         85,011        132,102
+$2M in A (concentrated)         -169,061        887,257        279,941        167,418        271,975
+$1M in each (diversified)        414,767        541,997        143,466        168,721        189,796
+
+(e) The same at 1%, in dollars
+==============================
+                                hist VaR        hist ES     Normal VaR       P&L mean         P&L SD
+position                                                                                            
+$1M in A                         650,545        709,548        232,645         83,709        135,988
+$1M in B                         641,248        700,805        222,303         85,011        132,102
+$2M in A (concentrated)        1,301,090      1,419,096        465,291        167,418        271,975
+$1M in each (diversified)        598,237        716,408        272,811        168,721        189,796
+
+(f) Subadditivity check: risk(A + B) <= risk(A) + risk(B)?
+==========================================================
+
+At 5% (historical):
+                 $1M A         $1M B           sum      $1M each   combined - sum
+VaR            -84,531       -86,011      -170,542       414,767          585,309
+        subadditivity FAILS (combined risk exceeds the sum)
+ES             443,628       419,587       863,216       541,997         -321,218
+        subadditivity holds
+
+At 1% (historical), for part (h):
+                 $1M A         $1M B           sum      $1M each   combined - sum
+VaR            650,545       641,248     1,291,793       598,237         -693,556
+        subadditivity holds
+ES             709,548       700,805     1,410,353       716,408         -693,945
+        subadditivity holds

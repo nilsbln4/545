@@ -1,0 +1,132 @@
+
+(d) Complete-case vs pairwise correlation matrices
+==================================================
+
+Complete-case correlation matrix (81 days)
+            A         B         C         D       IDX
+A    1.000000  0.396728  0.246622  0.413553  0.871358
+B    0.396728  1.000000  0.316887  0.236053  0.670860
+C    0.246622  0.316887  1.000000  0.185180  0.564842
+D    0.413553  0.236053  0.185180  1.000000  0.571930
+IDX  0.871358  0.670860  0.564842  0.571930  1.000000
+
+Pairwise correlation matrix
+            A         B         C         D       IDX
+A    1.000000  0.468626  0.430888  0.438449  0.869584
+B    0.468626  1.000000  0.463023  0.276692  0.732867
+C    0.430888  0.463023  1.000000  0.184615  0.713575
+D    0.438449  0.276692  0.184615  1.000000  0.605691
+IDX  0.869584  0.732867  0.713575  0.605691  1.000000
+
+Eigenvalues (ascending):
+complete case:  0.001506   0.548345   0.693320   0.870441   2.886388
+  smallest eigenvalue = 1.5058e-03
+pairwise     : -0.011072   0.471422   0.528367   0.857381   3.153902
+  smallest eigenvalue = -1.1072e-02
+
+Cholesky of the complete-case matrix: succeeded
+Cholesky of the pairwise matrix: FAILED (Matrix is not positive definite)
+
+(e) Covariance from pairwise correlations and full-history standard deviations
+==============================================================================
+Full-history standard deviations: A=0.016502  B=0.011919  C=0.018324  D=0.022829  IDX=0.012281
+
+Covariance matrix (pairwise correlations x full-history SDs)
+            A         B         C         D       IDX
+A    0.000272  0.000092  0.000130  0.000165  0.000176
+B    0.000092  0.000142  0.000101  0.000075  0.000107
+C    0.000130  0.000101  0.000336  0.000077  0.000161
+D    0.000165  0.000075  0.000077  0.000521  0.000170
+IDX  0.000176  0.000107  0.000161  0.000170  0.000151
+
+Tracking portfolio: long 1 IDX, short 0.40 A, 0.30 B, 0.20 C, 0.10 D
+Tracking portfolio variance (pairwise matrix) = -1.799370e-06
+  -> NEGATIVE: a variance below zero, which no real portfolio can have.
+Tracking portfolio variance (complete-case correlations, same SDs) = 1.097545e-06
+
+(f) Repairing the pairwise correlation matrix
+=============================================
+
+--- Rebonato-Jackel (near_psd) ---
+
+Repaired correlation matrix
+            A         B         C         D       IDX
+A    1.000000  0.469100  0.431512  0.438876  0.862036
+B    0.469100  1.000000  0.463391  0.277081  0.727806
+C    0.431512  0.463391  1.000000  0.185114  0.708224
+D    0.438876  0.277081  0.185114  1.000000  0.601404
+IDX  0.862036  0.727806  0.708224  0.601404  1.000000
+eigenvalues:  0.000000   0.470818   0.527998   0.856860   3.144325
+  smallest eigenvalue = 1.4689e-16
+Frobenius distance from pairwise matrix = 0.016182
+Tracking portfolio variance (repaired matrix) = 6.807298e-07
+
+--- Higham ---
+
+Repaired correlation matrix
+            A         B         C         D       IDX
+A    1.000000  0.470623  0.433165  0.440230  0.862540
+B    0.470623  1.000000  0.464374  0.277749  0.728687
+C    0.433165  0.464374  1.000000  0.185820  0.708810
+D    0.440230  0.277749  0.185820  1.000000  0.601964
+IDX  0.862540  0.728687  0.708810  0.601964  1.000000
+eigenvalues: -0.000000   0.468910   0.526999   0.856193   3.147899
+  smallest eigenvalue = -9.9121e-10
+Frobenius distance from pairwise matrix = 0.015520
+Tracking portfolio variance (repaired matrix) = 6.787647e-07
+
+Summary (f):
+                    method  smallest_eigenvalue  frobenius_from_pairwise  tracking_variance
+Rebonato-Jackel (near_psd)         1.468910e-16             1.618210e-02       6.807298e-07
+                    Higham        -9.912135e-10             1.552000e-02       6.787647e-07
+
+(h) Which entries did each repair move?
+=======================================
+
+Rebonato-Jackel (near_psd): repaired minus pairwise
+            A         B         C         D       IDX
+A    0.000000  0.000474  0.000624  0.000427 -0.007548
+B    0.000474  0.000000  0.000367  0.000389 -0.005061
+C    0.000624  0.000367 -0.000000  0.000499 -0.005351
+D    0.000427  0.000389  0.000499 -0.000000 -0.004288
+IDX -0.007548 -0.005061 -0.005351 -0.004288  0.000000
+
+Rebonato-Jackel (near_psd): pairs ranked by size of change, with the days each pair is jointly observed
+ pair    change  joint_days
+A-IDX -0.007548         242
+C-IDX -0.005351         228
+B-IDX -0.005061         242
+D-IDX -0.004288          96
+  A-C  0.000624         221
+  C-D  0.000499          83
+  A-B  0.000474         242
+  A-D  0.000427          93
+  B-D  0.000389          93
+  B-C  0.000367         221
+
+Higham: repaired minus pairwise
+            A         B         C         D       IDX
+A    0.000000  0.001997  0.002277  0.001781 -0.007045
+B    0.001997  0.000000  0.001351  0.001057 -0.004180
+C    0.002277  0.001351  0.000000  0.001205 -0.004765
+D    0.001781  0.001057  0.001205  0.000000 -0.003727
+IDX -0.007045 -0.004180 -0.004765 -0.003727  0.000000
+
+Higham: pairs ranked by size of change, with the days each pair is jointly observed
+ pair    change  joint_days
+A-IDX -0.007045         242
+C-IDX -0.004765         228
+B-IDX -0.004180         242
+D-IDX -0.003727          96
+  A-C  0.002277         221
+  A-B  0.001997         242
+  A-D  0.001781          93
+  B-C  0.001351         221
+  C-D  0.001205          83
+  B-D  0.001057          93
+
+(i) Size of the estimator gap vs size of the repairs (Frobenius distances)
+==========================================================================
+complete case vs pairwise        = 0.423935
+Rebonato-Jackel (near_psd)   repair size = 0.016182
+Higham                       repair size = 0.015520

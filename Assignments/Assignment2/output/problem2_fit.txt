@@ -1,0 +1,46 @@
+
+(d) One-day 5% VaR on $1,000,000, five ways
+===========================================
+estimate                              SD of the model       VaR ($)   VaR (% of position)
+1. Normal, equally weighted SD               0.011912        19,594               1.9594%
+2. Normal, EW SD, lambda = 0.97              0.020709        34,064               3.4064%
+3. Normal, EW SD, lambda = 0.94              0.022074        36,308               3.6308%
+4. Student's t (MLE)                       0.011815 *        19,057               1.9057%
+5. Historical simulation                           --        20,574               2.0574%
+* implied SD of the fitted t; its VaR is computed from the fitted t's parameters below, not from this SD.
+-- historical simulation assumes no distribution, so there is no model SD.
+
+Smallest to largest: 4 < 1 < 5 < 2 < 3
+
+Fitted Student's t parameters (full sample, mean-removed returns):
+  location mu                    = -1.9785e-19   (effectively 0)
+  scale sigma                    = 0.010306
+  degrees of freedom nu          = 8.3606
+  implied SD = sigma*sqrt(nu/(nu-2)) = 0.011815
+
+Convention note: the EW SDs use ew_cov, which removes the *weighted* mean (the instructor's
+ewCovar). Reading Week 3's formula literally, with the sample mean already removed as xbar,
+gives slightly different numbers; for reference:
+  lambda = 0.97: SD 0.021047  VaR $34,619  (vs $34,064 above)
+  lambda = 0.94: SD 0.023532  VaR $38,707  (vs $36,308 above)
+
+(f) Volatility inside each regime
+=================================
+Split: first 470 returns (calm) | last 30 returns (recent)
+
+                       n          SD    skewness  excess kurt.
+calm                 470    0.010379     -0.1399       -0.1178
+recent                30    0.025593      0.5251        0.1268
+full sample          500    0.011912     -0.1556        2.1324
+
+ratio of SDs (recent / calm) = 2.466
+
+(g) Is the gap between the two EW VaRs bigger than the estimation noise?
+========================================================================
+  lambda    n_eff   SE of vol (relative)          SD    SE of SD
+    0.97    65.67                  8.73%    0.020709    0.001807
+    0.94    32.33                 12.44%    0.022074    0.002745
+
+VaR at lambda = 0.97: $34,064
+VaR at lambda = 0.94: $36,308
+gap = $2,244  (6.59% of the lambda = 0.97 VaR)

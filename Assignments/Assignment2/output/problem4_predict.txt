@@ -1,0 +1,32 @@
+
+(a) First four moments of each series
+=====================================
+                       X1        X2        X3
+mean             0.000257 -0.000252  0.000890
+SD               0.011894  0.016168  0.010019
+skewness        -0.034174 -0.614117  0.073955
+excess kurtosis -0.122542  7.083388  2.853745
+min             -0.040000 -0.142914 -0.061244
+max              0.033149  0.065627  0.053039
+
+(a) Sensitivity to a single observation
+=======================================
+Moments recomputed after dropping the one observation furthest from the mean.
+Use this if one of the numbers above looks out of place.
+
+series  dropped value  obs #  excess kurt (all)  excess kurt (dropped)  skew (all)  skew (dropped)
+    X1      -0.040000    952          -0.122542              -0.192699   -0.034174       -0.005487
+    X2      -0.142914    952           7.083388               1.710093   -0.614117        0.055783
+    X3      -0.061244    952           2.853745               1.716058    0.073955        0.312681
+
+Saved plot to figures\problem4_rank_pairs.png
+
+(b) Days both series sit in their own tail
+==========================================
+Tail size: 25 days (2.5% of 1000) per series.
+Expected joint-tail days under independence: 1000 x 0.025 x 0.025 = 0.625
+
+pair         both worst 2.5%    both best 2.5%
+X1-X2                      6                 8
+X1-X3                      7                12
+X2-X3                      6                 9
