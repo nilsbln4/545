@@ -1,0 +1,76 @@
+
+Inputs
+======
+S = 99.12   r = 0.0425   255 trading days   horizon 10 days   500 daily returns   100,000 simulations, seed 545
+
+(c) Moments of ABC daily arithmetic returns
+===========================================
+mean            = 0.00032140
+variance        = 2.78031744e-04   (std = 0.01667428, ddof = 1)
+skewness        = 0.019058
+excess kurtosis = 2.427391
+
+(c) Fitted distributions and AICc (lower is better)
+===================================================
+normal : mu = 0.00032140   sigma = 0.01667428   AICc = -2671.9250
+t      : mu = 0.00000117   sigma = 0.01350621   nu = 5.7893   AICc = -2700.3487
+AICc(normal) - AICc(t) = 28.4237  ->  chosen: t
+std implied by the t fit = sigma sqrt(nu / (nu - 2)) = 0.01669429
+
+(d) 10 day delta-normal VaR and ES
+==================================
+P&L ~ Normal(0, |dollar delta| x sd x sqrt(10)),  sd = 0.01667428,  sd x sqrt(10) = 0.05272872
+dollar delta = book delta x S
+
+book                 delta    $ delta    P&L sd    VaR 5%     ES 5%    VaR 1%     ES 1%
+CoveredCall        69.9161    6930.08    365.41    601.05    753.74    850.08    973.91
+ShortStraddle      -0.8888     -88.10      4.65      7.64      9.58     10.81     12.38
+RiskReversal       61.3887    6084.85    320.85    527.75    661.81    746.40    855.12
+HedgedShortCall    -0.4444     -44.05      2.32      3.82      4.79      5.40      6.19
+(ES / VaR under a normal: 1.2540 at 5%, 1.1457 at 1%)
+
+(e) Full revaluation: 10 simulated daily returns (zero mean), compounded; options at 20 days left
+=================================================================================================
+
+normal -- simulated 10 day return: mean 0.000015, std 0.052835, 1% quantile -0.117325, 99% quantile 0.127757
+book              mean P&L    VaR 5%     ES 5%  ES/VaR    VaR 1%     ES 1%  ES/VaR
+CoveredCall           6.11    681.31    875.03   1.284    997.99   1147.79   1.150
+ShortStraddle        19.14    317.74    482.33   1.518    585.93    734.18   1.253
+RiskReversal          8.58    492.45    642.05   1.304    736.12    863.84   1.174
+HedgedShortCall      17.87    150.57    232.87   1.547    284.67    358.79   1.260
+
+t -- simulated 10 day return: mean -0.000059, std 0.052829, 1% quantile -0.121174, 99% quantile 0.129962
+book              mean P&L    VaR 5%     ES 5%  ES/VaR    VaR 1%     ES 1%  ES/VaR
+CoveredCall           6.07    683.67    902.16   1.320   1035.89   1229.59   1.187
+ShortStraddle        20.07    322.40    519.31   1.611    636.51    841.70   1.322
+RiskReversal          7.83    494.16    664.95   1.346    767.28    936.31   1.220
+HedgedShortCall      18.33    152.90    251.36   1.644    309.96    412.55   1.331
+
+(d) vs (e): VaR and ES side by side
+===================================
+book             measure   delta-N   full, N   full, t
+CoveredCall      VaR 5%     601.05    681.31    683.67
+CoveredCall      ES 5%      753.74    875.03    902.16
+CoveredCall      VaR 1%     850.08    997.99   1035.89
+CoveredCall      ES 1%      973.91   1147.79   1229.59
+ShortStraddle    VaR 5%       7.64    317.74    322.40
+ShortStraddle    ES 5%        9.58    482.33    519.31
+ShortStraddle    VaR 1%      10.81    585.93    636.51
+ShortStraddle    ES 1%       12.38    734.18    841.70
+RiskReversal     VaR 5%     527.75    492.45    494.16
+RiskReversal     ES 5%      661.81    642.05    664.95
+RiskReversal     VaR 1%     746.40    736.12    767.28
+RiskReversal     ES 1%      855.12    863.84    936.31
+HedgedShortCall  VaR 5%       3.82    150.57    152.90
+HedgedShortCall  ES 5%        4.79    232.87    251.36
+HedgedShortCall  VaR 1%       5.40    284.67    309.96
+HedgedShortCall  ES 1%        6.19    358.79    412.55
+
+(f) Chart
+=========
+Saved to figures/problem3_pnl_vs_price.png; price grid 79.30 to 119.24
+P&L at an unchanged price (S_10 = S), full revaluation:
+  CoveredCall          60.55
+  ShortStraddle       143.06
+  RiskReversal          3.73
+  HedgedShortCall      79.83

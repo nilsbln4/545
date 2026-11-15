@@ -1,0 +1,22 @@
+
+(f) Factor premia during the fund sample (annualized x 255)
+===========================================================
+Mkt-RF 5.5098%  SMB -4.1506%  HML 9.4778%  Mom 19.9375%
+
+(f) Change in alpha, CAPM -> Carhart, split by factor (annualized)
+==================================================================
+term = loading x premium; alpha_CAPM - alpha_Carhart = sum of the terms
+
+FUND1: CAPM alpha 11.2368% -> Carhart alpha 0.0749%  (change -11.1619%)
+    Mkt-RF (beta change)   loading   0.1023   x premium  5.5098%   =  0.5635%
+    SMB                    loading   0.0008   x premium -4.1506%   = -0.0035%
+    HML                    loading   0.2907   x premium  9.4778%   =  2.7555%
+    Mom                    loading   0.3936   x premium 19.9375%   =  7.8464%
+    sum                                                                      11.1619%   (check: CAPM - Carhart alpha = 11.1619%)
+
+FUND2: CAPM alpha 6.2451% -> Carhart alpha 6.9563%  (change +0.7112%)
+    Mkt-RF (beta change)   loading   0.0148   x premium  5.5098%   =  0.0813%
+    SMB                    loading   0.2088   x premium -4.1506%   = -0.8666%
+    HML                    loading  -0.0045   x premium  9.4778%   = -0.0422%
+    Mom                    loading   0.0058   x premium 19.9375%   =  0.1163%
+    sum                                                                      -0.7112%   (check: CAPM - Carhart alpha = -0.7112%)

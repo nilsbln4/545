@@ -19,7 +19,7 @@ dev = [
     "pytest>=8.0",
     "jupyter",
     "ipykernel",
-    "statsmodels>=0.14",  # used by Assignments/Assignment1
+    "statsmodels>=0.14",  # used by Assignments 1 and 3
 ]
 
 [tool.setuptools]

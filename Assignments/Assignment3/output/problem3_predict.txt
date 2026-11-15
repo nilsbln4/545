@@ -1,0 +1,39 @@
+
+Inputs
+======
+S = 99.12 (last price)   r = 0.0425   no dividends (b = r)   255 trading days a year   horizon 10 days
+
+Per position (unit = one share or one option; position = unit x holding)
+========================================================================
+Theta from GBSM is per year; Theta/day = theta / 255 x holding.
+
+      Portfolio  Type     Strike         IV  Holding  Unit value  Unit delta  Unit gamma  Unit theta/yr      Value      Delta      Gamma  Theta/day
+    CoveredCall Stock          -          -      100     99.1200      1.0000      0.0000         0.0000  9912.0000   100.0000     0.0000     0.0000
+    CoveredCall  Call   105.0000     0.2700     -100      1.6722      0.3008      0.0379       -14.7778  -167.2194   -30.0839    -3.7925     5.7952
+  ShortStraddle  Call   100.0000     0.2900     -100      3.7516      0.5044      0.0405       -18.6812  -375.1573   -50.4444    -4.0461     7.3260
+  ShortStraddle   Put   100.0000     0.2900     -100      4.1328     -0.4956      0.0405       -14.4524  -413.2821    49.5556    -4.0461     5.6676
+   RiskReversal  Call   105.0000     0.2700      100      1.6722      0.3008      0.0379       -14.7778   167.2194    30.0839     3.7925    -5.7952
+   RiskReversal   Put    95.0000     0.3200     -100      2.3301     -0.3130      0.0326       -14.9636  -233.0125    31.3048    -3.2566     5.8681
+HedgedShortCall  Call   100.0000     0.2900     -100      3.7516      0.5044      0.0405       -18.6812  -375.1573   -50.4444    -4.0461     7.3260
+HedgedShortCall Stock          -          -       50     99.1200      1.0000      0.0000         0.0000  4956.0000    50.0000     0.0000     0.0000
+
+(a) Book Greeks (delta per $1 of ABC, gamma per $1^2, theta in $ per trading day)
+=================================================================================
+                       Value        Delta        Gamma    Theta/day  Theta x 10d
+Portfolio                                                                       
+CoveredCall        9744.7806      69.9161      -3.7925       5.7952      57.9520
+ShortStraddle      -788.4394      -0.8888      -8.0921      12.9935     129.9355
+RiskReversal        -65.7930      61.3887       0.5360       0.0729       0.7290
+HedgedShortCall    4580.8427      -0.4444      -4.0461       7.3260      73.2595
+
+Scale of a 10 day move (from implied vol, for intuition only)
+=============================================================
+average IV of the options = 0.2883;  dS ~ S x IV x sqrt(10/255) = 5.6596
+
+Terms of dP ~ delta dS + 1/2 gamma dS^2 + theta dt at that dS (dollars):
+                    delta x dS  1/2 gamma dS^2    theta x 10d
+Portfolio                                                    
+CoveredCall             395.70          -60.74          57.95
+ShortStraddle            -5.03         -129.60         129.94
+RiskReversal            347.44            8.58           0.73
+HedgedShortCall          -2.52          -64.80          73.26

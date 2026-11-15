@@ -1,0 +1,31 @@
+
+(f) Strike 175: parity gap expressed in vol points
+==================================================
+C_mid = 10.6050   P_mid = 1.7100   C - P = 8.8950
+parity value S e^(-qT) - K e^(-rT) = 8.0068
+parity gap = 0.8882 dollars
+
+call IV (mid) = 26.05%   vega = 18.8417
+put  IV (mid) = 21.16%   vega = 17.4008
+average IV    = 23.60%   vega = 18.2192
+
+Gap converted with dIV = gap / vega (vol points):
+  using the call's vega    : 4.71
+  using the put's vega     : 5.10
+  using vega at average IV : 4.87
+Actual call IV - put IV    : 4.88
+
+Put price implied by parity with the call mid = 2.5982  (quoted mid 1.7100)
+IV of that parity put price = 26.05%  (call IV 26.05%)
+
+(g) The call wing above 210: parity gap in dollars vs in vol points
+===================================================================
+gap and band in dollars (as in part a); call IV - put IV from the mids;
+gap / vega at the average of the two IVs, in vol points.
+
+Strike   C_mid    gap $  band $   C IV%   P IV%  C-P IV  avg vega  gap/vega
+   205   0.280   0.0012    0.78   22.29   22.27    0.02    6.1805      0.02
+   210   0.110   0.0008    0.92   22.07   22.04    0.03    3.1850      0.03
+   215   0.075   0.0355    1.05   23.82   21.90    1.92    1.8410      1.93
+   220   0.075   0.0602    1.20   26.69   22.06    4.63    1.2673      4.75
+   225   0.075   0.0698    1.36   29.45   22.17    7.28    0.8884      7.86

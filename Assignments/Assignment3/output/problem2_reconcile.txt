@@ -1,0 +1,31 @@
+
+(g) Early exercise premium = American - European (tree, N = 500)
+================================================================
+                        American   European   premium
+Call   no dividends     3.924069   3.924069  0.000000
+Call   with dividends   3.469453   3.176279  0.293174
+Put    no dividends     4.439415   4.311631  0.127784
+Put    with dividends   5.371403   5.285960  0.085444
+
+For reference, no dividends with the GBSM European instead of the tree European:
+  Call  American 3.924069  GBSM 3.922268  difference 0.001801
+  Put   American 4.439415  GBSM 4.309830  difference 0.129585
+
+(g) Call exercise boundary just before the second dividend (t = 0.4)
+====================================================================
+Solve S* - X = C(S* - 1.5, X = 50.0, 0.10 years left).
+  hold value from GBSM                     : S* = 52.7168
+  hold value from the tree (100 steps left) : S* = 52.7239
+Above S* the holder exercises just before the dividend; below it they hold.
+
+Exercise vs hold around the boundary (GBSM hold value):
+        S  exercise S - X  hold C(S - D2)  decision
+    50.00          0.0000          1.2904      hold
+    51.00          1.0000          1.7434      hold
+    52.00          2.0000          2.2810      hold
+    53.00          3.0000          2.9001  exercise
+    54.00          4.0000          3.5941  exercise
+    56.00          6.0000          5.1717  exercise
+    60.00         10.0000          8.8175  exercise
+
+Today's price S = 48.5; S* / S = 1.0869

@@ -35,6 +35,8 @@ from .multivariate_t import (
     profile_nu,
     simulate_mvt,
 )
+from .options import GBSM, bt_american, bt_american_div, european_bounds, gbsm, implied_vol
+from .optimizers import max_sharpe, min_variance_for_return, portfolio_sharpe
 from .psd import chol_psd, higham_nearest_psd, near_psd
 from .returns import return_calculate
 from .risk_stats import agg_risk, expected_shortfall, value_at_risk
@@ -76,4 +78,13 @@ __all__ = [
     "tail_dependence_t",
     "copula_aicc",
     "copula_bic",
+    "GBSM",
+    "gbsm",
+    "european_bounds",
+    "implied_vol",
+    "bt_american",
+    "bt_american_div",
+    "max_sharpe",
+    "min_variance_for_return",
+    "portfolio_sharpe",
 ]

@@ -1,0 +1,80 @@
+
+Inputs
+======
+1257 days, 1996-10-01 to 2001-09-28; excess return = fund - RF
+
+(c) Factor regressions (daily; alpha also annualized x 255)
+===========================================================
+
+FUND1 -- CAPM
+                  coef         se         t
+  alpha       0.000441   0.000138    3.2043
+  Mkt-RF      0.846890   0.010900   77.6962
+  alpha annualized = 11.2368%   R^2 = 0.8279   adj R^2 = 0.8277   AICc = -9812.4177
+
+FUND1 -- FF3
+                  coef         se         t
+  alpha       0.000296   0.000131    2.2604
+  Mkt-RF      1.001727   0.017162   58.3688
+  SMB         0.082782   0.020500    4.0382
+  HML         0.334614   0.028812   11.6137
+  alpha annualized = 7.5559%   R^2 = 0.8452   adj R^2 = 0.8448   AICc = -9941.7019
+
+FUND1 -- Carhart
+                  coef         se         t
+  alpha       0.000003   0.000070    0.0421
+  Mkt-RF      0.949160   0.009166  103.5482
+  SMB         0.000835   0.010989    0.0760
+  HML         0.290728   0.015329   18.9661
+  Mom         0.393551   0.006972   56.4459
+  alpha annualized = 0.0749%   R^2 = 0.9563   adj R^2 = 0.9562   AICc = -11530.4079
+
+FUND2 -- CAPM
+                  coef         se         t
+  alpha       0.000245   0.000133    1.8349
+  Mkt-RF      0.428770   0.010579   40.5293
+  alpha annualized = 6.2451%   R^2 = 0.5669   adj R^2 = 0.5665   AICc = -9887.5008
+
+FUND2 -- FF3
+                  coef         se         t
+  alpha       0.000277   0.000127    2.1906
+  Mkt-RF      0.444303   0.016564   26.8242
+  SMB         0.210010   0.019785   10.6147
+  HML        -0.003800   0.027807   -0.1367
+  alpha annualized = 7.0672%   R^2 = 0.6148   adj R^2 = 0.6139   AICc = -10030.9413
+
+FUND2 -- Carhart
+                  coef         se         t
+  alpha       0.000273   0.000127    2.1495
+  Mkt-RF      0.443524   0.016655   26.6302
+  SMB         0.208796   0.019966   10.4575
+  HML        -0.004451   0.027852   -0.1598
+  Mom         0.005834   0.012668    0.4605
+  alpha annualized = 6.9563%   R^2 = 0.6149   adj R^2 = 0.6137   AICc = -10029.1350
+
+(c) Summary
+===========
+fund   model     alpha ann  t(alpha)     R^2         AICc
+FUND1  CAPM       11.2368%    3.2043  0.8279   -9812.4177
+FUND1  FF3         7.5559%    2.2604  0.8452   -9941.7019
+FUND1  Carhart     0.0749%    0.0421  0.9563  -11530.4079
+FUND2  CAPM        6.2451%    1.8349  0.5669   -9887.5008
+FUND2  FF3         7.0672%    2.1906  0.6148  -10030.9413
+FUND2  Carhart     6.9563%    2.1495  0.6149  -10029.1350
+
+(d) Expected annual return from the Carhart betas and the last 10 years of factors
+==================================================================================
+factor window 2014-10-01 to 2024-09-30 (2516 days)
+average factor return, annualized x 255: Mkt-RF 12.4946%  SMB -1.1889%  HML -2.3929%  Mom 2.4628%  RF 1.5731%
+
+fund     b x Mkt-RF      b x SMB      b x HML      b x Mom  excess, no a     alpha  excess + a  total, no a  total + a
+FUND1      11.8594%     -0.0010%     -0.6957%      0.9693%      12.1319%   0.0749%    12.2069%     13.7050%   13.7799%
+FUND2       5.5416%     -0.2482%      0.0107%      0.0144%       5.3184%   6.9563%    12.2748%      6.8915%   13.8478%
+
+(e) Worst daily momentum return, replayed on $10,000,000 (other factors flat)
+=============================================================================
+worst Mom day in the factor file: 1939-09-05, Mom = -18.4400%
+
+fund    beta_Mom    return        P&L ($)  daily sd  loss / sd
+FUND1     0.3936  -7.2571%       -725,709   1.1745%       6.18
+FUND2     0.0058  -0.1076%        -10,758   0.7186%       0.15

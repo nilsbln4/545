@@ -1,0 +1,76 @@
+
+Inputs
+======
+S = 48.5   X = 50.0   T = 0.5   r = 0.045   vol = 0.3
+dividends [0.25, 1.5] at t = [0.1, 0.4];  main tree N = 500, dividend steps [100, 400]
+Tree: CRR, u = e^(vol sqrt(dt)), d = 1/u, pu = (e^(r dt) - d)/(u - d). With dividends: non-recombining (new sub-tree from S - D at every node on a dividend date).
+
+(c) Values without and with dividends (tree N = 500)
+====================================================
+option           no dividends     method  with dividends    change
+European call        3.922268       GBSM        3.176279   -0.7460
+American call        3.924069       tree        3.469453   -0.4546
+European put         4.309830       GBSM        5.285960    0.9761
+American put         4.439415       tree        5.371403    0.9320
+(with dividends: all four from the non-recombining tree; Europeans without early exercise)
+
+European check, no dividends: tree N = 500 vs GBSM
+  European call   tree 3.924069   GBSM 3.922268
+  European put    tree 4.311631   GBSM 4.309830
+
+European with dividends: GBSM on S - PV(dividends) vs the tree
+  PV(dividends) = 1.722119   S - PV = 46.777881
+  European call   GBSM(S - PV) 3.072293   tree 3.176279   tree - GBSM +0.103986
+  European put    GBSM(S - PV) 5.181974   tree 5.285960   tree - GBSM +0.103986
+
+(d) Convergence of the American values (with dividends) in N
+============================================================
+Reference value = average of N = 800 and 805: call 3.467728, put 5.370174
+|gap| = distance between the values at N and N + 5;  avg - ref = their average minus the reference value.
+
+American call
+     N       V(N)   N+5     V(N+5)     |gap|    average  avg - ref
+    25   3.472275    30   3.465356  0.006919   3.468816  +0.001088
+    50   3.471515    55   3.484165  0.012650   3.477840  +0.010112
+   100   3.472648   105   3.465115  0.007533   3.468882  +0.001154
+   200   3.467544   205   3.467231  0.000313   3.467387  -0.000341
+   400   3.467612   405   3.469018  0.001407   3.468315  +0.000587
+
+American put
+     N       V(N)   N+5     V(N+5)     |gap|    average  avg - ref
+    25   5.396221    30   5.370216  0.026005   5.383218  +0.013044
+    50   5.367981    55   5.384513  0.016531   5.376247  +0.006073
+   100   5.379319   105   5.368243  0.011076   5.373781  +0.003607
+   200   5.371135   205   5.372829  0.001694   5.371982  +0.001808
+   400   5.369523   405   5.371744  0.002221   5.370633  +0.000459
+
+Chart of every N from 10 to 405 saved to figures/problem2_convergence.png
+
+(e) Delta and gamma of the American options with dividends, central differences (N = 500)
+=========================================================================================
+delta = (V(S+h) - V(S-h)) / 2h;   gamma = (V(S+h) - 2 V(S) + V(S-h)) / h^2
+
+American call: V(S) = 3.4694525885
+       h         V(S+h)         V(S-h)        delta          gamma
+       1   3.9923019153   2.9874786605     0.502412       0.040875
+     0.1   3.5199721934   3.4189364768     0.505179       0.000349
+    0.01   3.4745044922   3.4644007097     0.505189       0.000249
+   0.001   3.4699577779   3.4689473991     0.505189      -0.000000
+
+American put: V(S) = 5.3714034086
+       h         V(S+h)         V(S-h)        delta          gamma
+       1   4.8436129593   5.9383196274    -0.547353       0.039126
+     0.1   5.3165570514   5.4263109418    -0.548769       0.006118
+    0.01   5.3659160760   5.3768913300    -0.548763       0.005887
+   0.001   5.3708546489   5.3719521747    -0.548763       0.006381
+
+
+(f) Sensitivity to each dividend amount, dV/dD_n per dollar (bump 0.01, N = 500)
+================================================================================
+Check for the Europeans: GBSM on S - PV(div) gives dV/dD_n = -delta * e^(-r t_n).
+
+option              dV/dD1     dV/dD2  GBSM check D1  GBSM check D2
+European call    -0.441060  -0.386336      -0.457362      -0.451229 
+American call    -0.485060  -0.105495 
+European put      0.554450   0.595825       0.538148       0.530932 
+American put      0.563247   0.605017 

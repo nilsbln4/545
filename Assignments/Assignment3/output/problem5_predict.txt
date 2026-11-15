@@ -1,0 +1,23 @@
+
+Inputs
+======
+1257 days, 1996-10-01 to 2001-09-28; factors divided by 100; annualized with 255 days
+
+(a) Excess return, volatility, Sharpe ratio
+===========================================
+fund    mean ex/day  ann mean ex     sd/day   ann vol  Sharpe (ann)
+FUND1      0.000624     15.9030%   0.011746  18.7568%        0.8479
+FUND2      0.000338      8.6076%   0.007187  11.4761%        0.7500
+Mkt-RF     0.000216      5.5098%   0.012620  20.1520%        0.2734
+
+(a) CAPM: fund excess return on Mkt-RF (OLS, residual variance over T - 2)
+==========================================================================
+fund    alpha/day  alpha ann  se(alpha)  t(alpha)     beta  se(beta)     R^2
+FUND1    0.000441   11.2368%   0.000138    3.2043   0.8469    0.0109  0.8279
+FUND2    0.000245    6.2451%   0.000133    1.8349   0.4288    0.0106  0.5669
+
+(b) Correlation of each fund's CAPM residual with SMB, HML, Mom
+===============================================================
+            SMB       HML       Mom
+FUND1   -0.0612    0.2052    0.8015
+FUND2    0.3295   -0.1206    0.0530

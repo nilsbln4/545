@@ -1,0 +1,22 @@
+
+Inputs
+======
+S = 48.5   X = 50.0   T = 0.5   r = 0.045   vol = 0.3
+dividend 0.25 at t = 0.10
+dividend 1.50 at t = 0.40
+Moneyness S / X = 0.9700  (call out of the money, put in the money)
+
+(a) Early exercise condition D_n > X (1 - e^(-r (T - t_n)))
+===========================================================
+Right side = interest saved by paying the strike at T instead of at t_n.
+
+ n   t_n  T - t_n    D_n   X(1-e^(-r(T-t_n)))  D_n - threshold  can exercise be optimal?
+ 1  0.10     0.40   0.25               0.8919          -0.6419  no
+ 2  0.40     0.10   1.50               0.2245           1.2755  yes
+
+(b) Context: size of the dividends
+==================================
+PV of dividend 1 = 0.2489
+PV of dividend 2 = 1.4732
+PV of all dividends = 1.7221  (3.55% of the stock price)
+Stock price less PV of dividends = 46.7779
