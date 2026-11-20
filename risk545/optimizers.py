@@ -57,3 +57,41 @@ def min_variance_for_return(cov, mean, target: float, bounds) -> np.ndarray:
     if not res.success:
         raise RuntimeError(f"min_variance_for_return: {res.message}")
     return res.x
+
+
+def risk_parity(cov, risk_budget=None) -> np.ndarray:
+    """Risk parity / risk budgeting weights (long only, summing to one).
+
+    library/optimizers.jl's riskParity asks for component standard deviations
+    CSD_i = w_i (S w)_i / sqrt(w' S w) proportional to the risk budget b (it
+    minimizes the spread of CSD_i / b_i with Ipopt). Here the same target is
+    reached through the convex problem of Spinu (2013):
+        minimize 1/2 w' S w - sum_i b_i log(w_i),  w > 0,
+    whose first order condition is w_i (S w)_i = b_i for every i, so CSD_i is
+    proportional to b_i. The solution is unique; it is scaled to sum to one.
+    """
+    cov = np.asarray(cov, dtype=float)
+    n = cov.shape[0]
+    b = np.ones(n) if risk_budget is None else np.asarray(risk_budget, dtype=float)
+    if b.shape != (n,):
+        raise ValueError("risk_budget must have one entry per asset")
+    b = b / b.sum()
+
+    def f(w):
+        return 0.5 * w @ cov @ w - b @ np.log(w)
+
+    def grad(w):
+        return cov @ w - b / w
+
+    x0 = 1.0 / np.sqrt(np.diag(cov))           # inverse-volatility start
+    x0 = x0 / np.sqrt(x0 @ cov @ x0)
+    res = minimize(f, x0, jac=grad, method="L-BFGS-B", bounds=[(1e-12, None)] * n,
+                   options={"ftol": 1e-15, "gtol": 1e-12, "maxiter": 10_000})
+    return res.x / res.x.sum()
+
+
+def component_sd(w, cov) -> np.ndarray:
+    """Each asset's contribution to portfolio standard deviation; sums to sqrt(w' S w)."""
+    w = np.asarray(w, dtype=float)
+    cov = np.asarray(cov, dtype=float)
+    return w * (cov @ w) / np.sqrt(w @ cov @ w)

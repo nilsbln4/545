@@ -25,6 +25,24 @@ TIGHT = dict(rtol=1e-6, atol=1e-8)
 MLE = dict(rtol=1e-4, atol=1e-6)
 # Monte Carlo with 100,000 draws: sampling noise, so a looser bar.
 MONTE_CARLO = dict(rtol=0.08, atol=0.0015)
+# Simulated portfolio VaR / ES (9.1, 13.9): a different RNG from the reference, so
+# compared within sampling noise of 100,000 draws.
+MONTE_CARLO_RISK = dict(rtol=0.05)
+# Optimizer weights (10.3, 10.4): Ipopt in the reference lands on ~1e-8 where the true
+# weight is 0, so an absolute tolerance as well as a relative one.
+WEIGHTS = dict(rtol=1e-4, atol=1e-6)
+
+
+def scenario_frame(names, values, sim_returns) -> pd.DataFrame:
+    """Long table of (stock, iteration) P&L from simulated returns, the shape
+    risk545.agg_risk expects (tests 9.1 and 13.9)."""
+    n = sim_returns.shape[0]
+    parts = [
+        pd.DataFrame({"Stock": name, "currentValue": cv, "iteration": np.arange(n),
+                      "simulatedValue": cv * (1 + sim_returns[:, j]), "pnl": cv * sim_returns[:, j]})
+        for j, (name, cv) in enumerate(zip(names, values))
+    ]
+    return pd.concat(parts, ignore_index=True)
 
 
 def load(name: str) -> pd.DataFrame:

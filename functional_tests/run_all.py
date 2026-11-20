@@ -1,4 +1,4 @@
-"""Run every functional test (1.1 through 7.6) and print one PASS/FAIL line each.
+"""Run every functional test (1.1 through 13.9) and print one PASS/FAIL line each.
 
     python functional_tests/run_all.py
 

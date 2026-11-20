@@ -164,3 +164,45 @@ def bt_american_div(call: bool, underlying: float, strike: float, ttm: float, rf
     american=False gives the European value on the same tree."""
     divs = [(int(s), float(a)) for s, a in zip(div_steps, div_amts)]
     return float(_tree(call, np.array([float(underlying)]), strike, ttm, rf, rf, ivol, n, divs, american)[0])
+
+
+def _central_step(x: float) -> float:
+    """FiniteDiff.jl's default central-difference step: cbrt(eps) x max(|x|, 1)."""
+    return float(np.cbrt(np.finfo(float).eps) * max(abs(x), 1.0))
+
+
+def bt_american_greeks(call: bool, underlying: float, strike: float, ttm: float, rf: float, b: float,
+                       ivol: float, n: int, gamma_bump: float = 1.5) -> dict:
+    """Value and finite-difference Greeks of an American option on the recombining tree,
+    as the reference for functional test 12.2 computes them (testfiles/test_setup.jl):
+
+    delta, vega, rho, theta -- central differences of the tree value in S, ivol, rf and
+        ttm with FiniteDiff.jl's default step. rho moves rf with b held fixed (b is its
+        own argument), and theta is dV/d(ttm): positive when more time adds value. That
+        is the sign the reference output uses (gbsm's theta is the opposite, dV/dt).
+    gamma -- (V(S+d) - 2 V(S) + V(S-d)) / d^2 with d = 1.5. The bump has to be large
+        because the tree value is piecewise linear in S between nodes.
+    """
+    p = {"underlying": float(underlying), "strike": float(strike), "ttm": float(ttm),
+         "rf": float(rf), "b": float(b), "ivol": float(ivol)}
+
+    def value(q):
+        return bt_american(call, q["underlying"], q["strike"], q["ttm"], q["rf"], q["b"], q["ivol"], n)
+
+    def bumped(name, h):
+        q = dict(p)
+        q[name] += h
+        return value(q)
+
+    def central(name):
+        h = _central_step(p[name])
+        return (bumped(name, h) - bumped(name, -h)) / (2 * h)
+
+    v0 = value(p)
+    d = gamma_bump
+    return {"value": v0,
+            "delta": central("underlying"),
+            "gamma": (bumped("underlying", d) - 2 * v0 + bumped("underlying", -d)) / d**2,
+            "vega": central("ivol"),
+            "rho": central("rf"),
+            "theta": central("ttm")}

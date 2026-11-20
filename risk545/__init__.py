@@ -5,6 +5,7 @@ group. See testfiles/Tests.xlsx / testfiles/new_test_rows.md for the test
 specification this package is checked against.
 """
 
+from .attribution import expost_factor
 from .copula import (
     copula_aicc,
     copula_bic,
@@ -35,8 +36,8 @@ from .multivariate_t import (
     profile_nu,
     simulate_mvt,
 )
-from .options import GBSM, bt_american, bt_american_div, european_bounds, gbsm, implied_vol
-from .optimizers import max_sharpe, min_variance_for_return, portfolio_sharpe
+from .options import GBSM, bt_american, bt_american_div, bt_american_greeks, european_bounds, gbsm, implied_vol
+from .optimizers import component_sd, max_sharpe, min_variance_for_return, portfolio_sharpe, risk_parity
 from .psd import chol_psd, higham_nearest_psd, near_psd
 from .returns import return_calculate
 from .risk_stats import agg_risk, expected_shortfall, value_at_risk
@@ -87,4 +88,8 @@ __all__ = [
     "max_sharpe",
     "min_variance_for_return",
     "portfolio_sharpe",
+    "risk_parity",
+    "component_sd",
+    "bt_american_greeks",
+    "expost_factor",
 ]

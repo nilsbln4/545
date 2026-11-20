@@ -109,3 +109,54 @@ def test_unconstrained_max_sharpe_beats_long_only():
         w = rng.normal(size=5)
         w /= w.sum()
         assert rl.portfolio_sharpe(w, means, cov, rf) <= rl.portfolio_sharpe(w_u, means, cov, rf) + 1e-12
+
+
+# ---------------------------------------------------------------------------
+# Risk parity (10.1, 10.2), attribution (11.1, 11.2), tree Greeks (12.2)
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("budget,ref", [(None, "testout10_1.csv"), ([1, 1, 1, 1, 0.5], "testout10_2.csv")])
+def test_risk_parity_10_1_10_2(budget, ref):
+    cov = pd.read_csv(DATA / "test5_2.csv").to_numpy()
+    w = rl.risk_parity(cov, budget)
+    np.testing.assert_allclose(w, pd.read_csv(DATA / ref)["W"].to_numpy(), rtol=1e-6)
+    # the defining property: component SDs proportional to the budget
+    b = np.ones(5) if budget is None else np.asarray(budget, dtype=float)
+    csd = rl.component_sd(w, cov)
+    np.testing.assert_allclose(csd / b / (csd / b).mean(), 1.0, rtol=1e-6)
+
+
+def test_expost_attribution_11_1():
+    r = pd.read_csv(DATA / "test11_1_returns.csv")
+    w = pd.read_csv(DATA / "test11_1_weights.csv")["W"].to_numpy()
+    got = rl.expost_factor(w, r, r, np.eye(3)).drop(columns="Alpha")
+    exp = pd.read_csv(DATA / "testout11_1.csv")
+    assert list(got["Value"]) == list(exp["Value"])
+    np.testing.assert_allclose(got.iloc[:, 1:].to_numpy(), exp.iloc[:, 1:].to_numpy(), rtol=1e-9)
+
+
+def test_expost_factor_attribution_11_2():
+    f = pd.read_csv(DATA / "test11_2_factor_returns.csv")
+    s = pd.read_csv(DATA / "test11_2_stock_returns.csv")
+    beta = pd.read_csv(DATA / "test11_2_beta.csv").drop(columns="Stock").to_numpy()
+    w = pd.read_csv(DATA / "test11_2_weights.csv")["W"].to_numpy()
+    got = rl.expost_factor(w, s, f, beta)
+    exp = pd.read_csv(DATA / "testout11_2.csv")
+    np.testing.assert_allclose(got.iloc[:, 1:].to_numpy(), exp.iloc[:, 1:].to_numpy(), rtol=1e-9)
+    # attributions add up to the portfolio's total return and standard deviation
+    row = got.set_index("Value")
+    for r in ("Return Attribution", "Vol Attribution"):
+        np.testing.assert_allclose(row.loc[r].drop("Portfolio").sum(), row.loc[r, "Portfolio"], rtol=1e-10)
+
+
+def test_bt_american_greeks_12_2():
+    opts = pd.read_csv(DATA / "test12_1.csv").dropna(subset=["ID"])
+    exp = pd.read_csv(DATA / "testout12_2.csv")
+    got = []
+    for _, o in opts.iterrows():
+        g = rl.bt_american_greeks(o["Option Type"] == "Call", o.Underlying, o.Strike,
+                                  o.DaysToMaturity / o.DayPerYear, o.RiskFreeRate,
+                                  o.RiskFreeRate - o.DividendRate, o.ImpliedVol, 500)
+        got.append([g[k] for k in ("value", "delta", "gamma", "vega", "rho", "theta")])
+    np.testing.assert_allclose(np.array(got), exp[["Value", "Delta", "Gamma", "Vega", "Rho", "Theta"]].to_numpy(),
+                               rtol=1e-6)
