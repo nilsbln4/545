@@ -55,3 +55,12 @@ __pycache__/
 # Microsoft Office lock files (created while a file is open elsewhere)
 ~$*
 ~WRL*.tmp
+
+# Quarto render byproducts for the notes and the book (figure conversions etc.).
+# `make clean` removes these. Slide decks' *_files folders are NOT ignored --
+# the reveal.js HTML needs them, so they stay tracked.
+/book/*_files/
+/Week*/week*_files/
+
+# Figures written by the Week scripts when run (not the published notes figures)
+/Week*/figures/*_julia.png
